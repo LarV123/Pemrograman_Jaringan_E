@@ -1,26 +1,22 @@
-from library import download_gambar,get_url_list
-import time
+from streamer import stream_file,stream_config
 import datetime
 import threading
 
-
-
-
-def download_semua():
+def stream_all():
     texec = dict()
-    urls = get_url_list()
+    configs = stream_config()
 
     catat_awal = datetime.datetime.now()
-    for k in urls:
-        print(f"mendownload {urls[k]}")
-        waktu = time.time()
+
+    for config in configs:
+        print(f"streaming file {config['filename']} to {config['ip_address']}:{config['port']}")
         #bagian ini merupakan bagian yang mengistruksikan eksekusi fungsi download gambar secara multithread
-        texec[k] = threading.Thread(target=download_gambar, args=(urls[k],))
-        texec[k].start()
+        texec[config['filename']] = threading.Thread(target=stream_file, args=(config['filename'], config['ip_address'], config['port']))
+        texec[config['filename']].start()
 
     #setelah menyelesaikan tugasnya, dikembalikan ke main thread dengan join
-    for k in urls:
-        texec[k].join()
+    for config in configs:
+        texec[config['filename']].join()
 
     catat_akhir = datetime.datetime.now()
     selesai = catat_akhir - catat_awal
@@ -30,4 +26,4 @@ def download_semua():
 #fungsi download_gambar akan dijalankan secara multithreading
 
 if __name__=='__main__':
-    download_semua()
+    stream_all()
