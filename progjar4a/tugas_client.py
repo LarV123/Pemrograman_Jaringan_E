@@ -23,8 +23,5 @@ def request_file_pokijan(count=100):
     selesai = catat_akhir - catat_awal
     print(f"Waktu TOTAL yang dibutuhkan {selesai} detik {catat_awal} s/d {catat_akhir}")
 
-
-#fungsi download_gambar akan dijalankan secara multithreading
-
 if __name__=='__main__':
     request_file_pokijan()
